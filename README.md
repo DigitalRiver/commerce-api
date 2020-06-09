@@ -1,7 +1,7 @@
 # Commerce API Postman Collection
 Welcome to the demo of the Commerce API!  You can use this Postman collection to test our API offering, string together checkout flows, and make calls to a test environment with a test API key provided to you by Digital River. 
 ## Documentation
-You can find documentation on the Digital River API on our Developer Portal here: https://developers.digitalriver.com/digital-river-api/
+You can find documentation on the Commerce API here: https://commerceapi.digitalriver.com
 # Installation and Use
 To install the Commerce API Postman Collection, you can click the Run in Postman button below:
 
