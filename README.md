@@ -9,7 +9,7 @@ To install the API Demo, you can click the Run in Postman button below:
 
 Alternatively, you can install this collection from your Postman client by directly downloading the .zip file, selecting "Import," and dropping in the .json file. 
 
-## Step 1: Create or have a Global Commerce Site
+## Step 1: Create or use an existing Global Commerce Site
 Before you can start making Commerce API requests, you'll need to contact Digital River to start the process of creating a Global Commerce (GC) Site. This will also include a product/pricing/promotions setup step.
 
 If you have an existing GC Site please discuss a migration with your assigned account team. To start the Site creation process go to the [Request Demo page](https://www.digitalriver.com/request-demo/) and request a test API key in the "Tell Us More" section and mention "Commerce APIs". From there, Digital River will reach out to you with further information. 
