@@ -9,14 +9,24 @@ To install the API Demo, you can click the Run in Postman button below:
 
 Alternatively, you can install this collection from your Postman client by directly downloading the .zip file, selecting "Import," and dropping in the .json file. 
 
-## Step 1: Obtain API credentials
-Before you can start making Commerce API requests, you'll need to contact Digital River to obtain a test key. After getting your key, you can begin to make test calls to the API. 
+## Step 1: Create or have a Global Commerce Site
+Before you can start making Commerce API requests, you'll need to contact Digital River to start the process of creating a Global Commerce (GC) Site. This will also include a product/pricing/promotions setup step.
 
-To start the process of getting a test key, go to the [Request Demo page](https://www.digitalriver.com/request-demo/) and request a test API key in the "Tell Us More" section. From there, Digital River will reach out to get you your key in 1-2 days. 
+If you have an existing GC Site please discuss a migration with your assigned account team. To start the Site creation process go to the [Request Demo page](https://www.digitalriver.com/request-demo/) and request a test API key in the "Tell Us More" section and mention "Commerce APIs". From there, Digital River will reach out to you with further info. 
 
-## Step 2: Perform a test request
-In Postman, open Get Product ID from List request and include the `product.id` in the query parameters. 
-A successful response contains the data for the specified `product.id`.
+## Step 2: Obtain API credentials
+Before you can start making Commerce API requests, you'll need to obtain test keys. After getting your keys, you can begin to make test calls to the API.
+
+## Step 3: Perform a test request
+In Postman, you will need to have your public and confidential keys available. Modify these variables in the [Collection Variables](https://learning.postman.com/docs/sending-requests/variables/#defining-collection-variables) section:
+
+- *apiDomain* - **Production:** api.digitalriver.com | **CTE:** api-cte-ext.digitalriver.com
+- *publicApiKey* - Generated for you and provided by Digital River
+- *drjsApiKey* - Generated for you and provided by Digital River
+- *confidentialApiKey* - Generated for you and provided by Digital River
+- *confidentialSecret* - Generated for you and provided by Digital River
+
+Once you set up the variables, simply go through the calls in order.
 
 # Contact Us
 If you have questions/concerns or if you want to move forward with Digital River, please visit our website at https://www.digitalriver.com/ and select “Contact Us.”
