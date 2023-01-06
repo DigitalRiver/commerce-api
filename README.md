@@ -5,7 +5,7 @@ You can find documentation on the Digital River API on our Developer Portal here
 # Installation and Use
 To install the API Demo, you can click the Run in Postman button below:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c9d17e796855a15cac83)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/digital-river-doc-team/workspace/commerce-api/collection/22793802-b8abd429-d3f6-4594-adc2-f7adaa1f09ac?action=share&creator=22793802)
 
 Alternatively, you can install this collection from your Postman client by directly downloading the .zip file, selecting "Import," and dropping in the .json file. 
 
