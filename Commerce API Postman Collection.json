@@ -1,1 +1,480 @@
-{"info":{"_postman_id":"70504950-fd5d-4669-bf0a-583fe6c11e1f","name":"Commerce API Quick Start","description":"A collection of a few basic API calls to create an order.","schema":"https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"},"item":[{"name":"Product id from list","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Product data was successful\", function () {\r","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r","    pm.response.to.be.withBody;\r","    pm.response.to.be.json;\r","});\r","\r","pm.test(\"Get first productId\", function () {\r","    pm.expect(pm.response.json().products.product[0].id).not.eql(undefined);\r","    pm.collectionVariables.set(\"productId\", pm.response.json().products.product[0].id);\r","});"]}}],"_postman_id":"a2fab0ba-d220-4394-91ff-bef169a466a9","request":{"method":"GET","header":[],"url":{"raw":"https:\/\/{{apiDomain}}\/v1\/shoppers\/me\/products.json?apiKey={{publicApiKey}}&expand=product&fields=product.id","protocol":"https","host":["{{apiDomain}}"],"path":["v1","shoppers","me","products.json"],"query":[{"key":"apiKey","value":"{{publicApiKey}}"},{"key":"expand","value":"product"},{"key":"fields","value":"product.id"}]},"description":"Retrieves a product id from the list of products.\r\nhttps:\/\/commerceapi.digitalriver.com\/reference#v1shoppersmeproductsget"},"response":[]},{"name":"Confidential access_token","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Access token successful\", function () {","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);","    pm.response.to.be.withBody;","    pm.response.to.be.json;","});","","pm.test(\"Save access token\", function () {","    pm.expect(pm.response.json().access_token).not.eql(undefined);","    pm.collectionVariables.set(\"limitedAccessToken\", pm.response.json().access_token);","});"]}}],"_postman_id":"7cb6d849-359b-4802-ba16-b28f1576886b","request":{"auth":{"type":"basic","basic":{"username":"{{confidentialApiKey}}","password":"{{confidentialSecret}}","saveHelperData":true,"showPassword":false}},"method":"POST","header":[{"key":"Content-Type","value":"application\/x-www-form-urlencoded"}],"body":{"mode":"urlencoded","urlencoded":[{"key":"grant_type","value":"client_credentials","type":"text"}]},"url":"https:\/\/{{apiDomain}}\/oauth20\/token","description":"Establishes a limited access token for an anonymous shopper session.\nhttps:\/\/commerceapi.digitalriver.com\/docs\/oauth-20#oauth-20-apis"},"response":[]},{"name":"Add Product to Cart ","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Add to cart was successful\", function () {\r","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r","    pm.response.to.be.withBody;\r","    pm.response.to.be.json;\r","});\r","\r","pm.test(\"Verify cartId\", function () {\r","    pm.expect(pm.response.json().cart.id).not.eql(undefined);\r","    pm.collectionVariables.set(\"orderId\", pm.response.json().cart.id);\r","});"]}}],"_postman_id":"3b01a486-1e59-4d38-99ed-4a6f5add6f1a","request":{"auth":{"type":"bearer","bearer":{"token":"{{limitedAccessToken}}"}},"method":"POST","header":[],"body":{"mode":"raw","raw":""},"url":{"raw":"https:\/\/{{apiDomain}}\/v1\/shoppers\/me\/carts\/active.json?productId={{productId}}&testOrder=true","protocol":"https","host":["{{apiDomain}}"],"path":["v1","shoppers","me","carts","active.json"],"query":[{"key":"productId","value":"{{productId}}"},{"key":"testOrder","value":"true"}]},"description":"Adds product to active cart using the product reference.\r\nhttps:\/\/commerceapi.digitalriver.com\/reference#v1shoppersmecartsactivepost"},"response":[]},{"name":"Create payment source","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Created Payment Source\", function () {","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);","    pm.response.to.be.withBody;","    pm.response.to.be.json;","});","","pm.test(\"Verify sourceId\", function () {","    pm.expect(pm.response.json().id).not.eql(undefined);","    pm.collectionVariables.set(\"sourceId\", pm.response.json().id);","});","","pm.test(\"Response Body Contract\", function () {","    pm.expect(pm.response.text()).to.include(\"id\");","    pm.expect(pm.response.text()).to.include(\"createdTime\");","    pm.expect(pm.response.text()).to.include(\"state\");","    pm.expect(pm.response.text()).to.include(\"type\");","    pm.expect(pm.response.text()).to.include(\"owner\");","    pm.expect(pm.response.text()).to.include(\"reusable\");","    pm.expect(pm.response.json().owner.address.line1).not.eql(null);","    pm.expect(pm.response.json().owner.address.city).not.eql(null);","    pm.expect(pm.response.json().owner.address.postalCode).not.eql(null);","    pm.expect(pm.response.json().owner.address.state).not.eql(null);","    pm.expect(pm.response.json().owner.address.country).not.eql(null);","    pm.expect(pm.response.json().creditCard.lastFourDigits).not.eql(null);","    pm.expect(pm.response.json().creditCard.expirationMonth).not.eql(null);","    pm.expect(pm.response.json().creditCard.expirationYear).not.eql(null);","    pm.expect(pm.response.json().creditCard.brand).not.eql(null);","});"]}}],"_postman_id":"da9454b6-0a27-496d-be56-730bb41f85cf","request":{"auth":{"type":"bearer","bearer":{"token":"{{drjsApiKey}}"}},"method":"POST","header":[{"key":"Content-Type","value":"application\/json"}],"body":{"mode":"raw","raw":"{\r\n\t\"type\": \"creditCard\",\r\n\t\"currency\": \"USD\",\r\n\t\"amount\": 4.84,\r\n\t\"reusable\": false,\r\n\t\"owner\": {\r\n\t\t\"firstName\": \"Digital\",\r\n\t\t\"lastName\": \"River\",\r\n\t\t\"email\": \"test@digitalriver.com\",\r\n\t\t\"address\": {\r\n\t\t\t\"line1\": \"10380 Bren Road West\",\r\n\t\t\t\"city\": \"Minnetonka\",\r\n\t\t\t\"state\": \"MN\",\r\n\t\t\t\"country\": \"US\",\r\n\t\t\t\"postalCode\": \"55343\"\r\n\t\t}\r\n\t},\r\n\t\"creditCard\": {\r\n\t\t\"number\": \"4718491477220129\",\r\n\t\t\"expirationMonth\": 7,\r\n\t\t\"expirationYear\": 2027,\r\n\t\t\"cvv\": \"415\"\r\n\t}\r\n}","options":{"raw":{"language":"text"}}},"url":"https:\/\/{{apiDomain}}\/payments\/sources","description":"The DigitalRiver.js library can be used to display payment methods and create a payment source."},"response":[]},{"name":"Apply payment source","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Apply payment is successful\", function () {\r","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r","    pm.response.to.be.withBody;\r","    pm.response.to.be.json;\r","});\r","\r","pm.test(\"Check payment method\", function () {\r","    pm.expect(pm.response.json().cart.paymentMethod.type).not.eql(undefined);\r","    pm.collectionVariables.set(\"paymentMethod\", pm.response.json().cart.paymentMethod.type);\r","});"]}}],"_postman_id":"4abf0901-c2ed-4688-b867-e52c0a4ed845","request":{"auth":{"type":"bearer","bearer":{"token":"{{limitedAccessToken}}"}},"method":"POST","header":[],"body":{"mode":"raw","raw":"{\n  \"paymentMethod\": {\n    \"sourceId\": \"{{sourceId}}\"\n  }\n}","options":{"raw":{"language":"json"}}},"url":"https:\/\/{{apiDomain}}\/v1\/shoppers\/me\/carts\/active\/apply-payment-method.json","description":"Apply the payment source to the active cart.\r\nhttps:\/\/developers.digitalriver.com\/payment-integrations\/digitalriver.js\/reference\/commerce-api-usage"},"response":[]},{"name":"Submit Cart","event":[{"listen":"test","script":{"type":"text\/javascript","exec":["pm.test(\"Submit cart call is successful\", function () {","    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);","    pm.response.to.be.withBody;","    pm.response.to.be.json;","});","","pm.test(\"Verify order number\", function () {","    pm.expect(pm.response.json().submitCart.order.id).not.eql(undefined);","    pm.collectionVariables.set(\"orderID\", pm.response.json().submitCart.order.id);","});"]}}],"_postman_id":"032b16fb-123c-4ccc-a032-93f2b859afbe","request":{"auth":{"type":"bearer","bearer":{"token":"{{limitedAccessToken}}"}},"method":"POST","header":[{"key":"Authorization","value":"bearer {{RESPONSE-FullAccessToken}}"}],"body":{"mode":"raw","raw":""},"url":"https:\/\/{{apiDomain}}\/v1\/shoppers\/me\/carts\/active\/submit-cart.json","description":"Submits the cart with lineItems, address & payment applied.\r\nhttps:\/\/commerceapi.digitalriver.com\/reference#v1shoppersmecartsactivesubmitcartpost"},"response":[]}],"event":[{"listen":"prerequest","script":{"id":"7430e34f-4b78-453b-9161-0b32c324c2f6","type":"text\/javascript","exec":[""]}},{"listen":"test","script":{"id":"a515a7ac-deea-494b-9c9a-d78a7cc7058d","type":"text\/javascript","exec":[""]}}],"variable":[{"id":"308b0dd4-6977-4326-a4a7-6a28d5769766","key":"apiDomain","value":"api.digitalriver.com","type":"string"},{"id":"8597e44b-ed41-4432-81ae-1a847e7bf8dc","key":"publicApiKey","value":"","type":"string"},{"id":"a459d955-4649-42e5-9b68-eefa0e35ff34","key":"confidentialApiKey","value":"","type":"string"},{"id":"64f09acd-345f-432c-acab-fe820b03d6e2","key":"confidentialSecret","value":"","type":"string"},{"id":"7db72562-2ef0-4838-8443-5aebee7cab71","key":"drjsApiKey","value":"","type":"string"},{"id":"0d397bce-d7bd-43c6-91ad-9fdf1aebfa7a","key":"productId","value":"","type":"string"},{"id":"28d45f40-bbc3-4b04-8552-6b3127a03a8a","key":"limitedAccessToken","value":"","type":"string"}],"protocolProfileBehavior":{}}
+{
+	"info": {
+		"_postman_id": "fe13aaff-5deb-4618-8405-a6c31702842a",
+		"name": "Commerce API Quick Start",
+		"description": "A collection of a few basic API calls to create an order.\n\n[https://docs.digitalriver.com/commerce-api](https://docs.digitalriver.com/commerce-api)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34538176",
+		"_collection_link": "https://www.postman.com/digitalriverapi/workspace/commerce-api/collection/11093059-fe13aaff-5deb-4618-8405-a6c31702842a?action=share&source=collection_link&creator=34538176"
+	},
+	"item": [
+		{
+			"name": "Product id from list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Product data was successful\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get first productId\", function () {\r",
+							"    pm.expect(pm.response.json().products.product[0].id).not.eql(undefined);\r",
+							"    pm.collectionVariables.set(\"productId\", pm.response.json().products.product[0].id);\r",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{apiDomain}}/v1/shoppers/me/products.json?apiKey={{publicApiKey}}&expand=product&fields=product.id",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"v1",
+						"shoppers",
+						"me",
+						"products.json"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "{{publicApiKey}}"
+						},
+						{
+							"key": "expand",
+							"value": "product"
+						},
+						{
+							"key": "fields",
+							"value": "product.id"
+						}
+					]
+				},
+				"description": "Retrieves a product id from the list of products.  \n[https://docs.digitalriver.com/commerce-api/shopper-apis/product-discovery/products](https://docs.digitalriver.com/commerce-api/shopper-apis/product-discovery/products)"
+			},
+			"response": []
+		},
+		{
+			"name": "Confidential access_token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Access token successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Save access token\", function () {",
+							"    pm.expect(pm.response.json().access_token).not.eql(undefined);",
+							"    pm.collectionVariables.set(\"limitedAccessToken\", pm.response.json().access_token);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{confidentialApiKey}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{confidentialSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{apiDomain}}/oauth20/token",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"oauth20",
+						"token"
+					]
+				},
+				"description": "Establishes a limited access token for an anonymous shopper session.  \n[https://docs.digitalriver.com/commerce-api/shopper-apis/oauth/oauth-2.0-apis](https://docs.digitalriver.com/commerce-api/shopper-apis/oauth/oauth-2.0-apis)"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Cart ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Add to cart was successful\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify cartId\", function () {\r",
+							"    pm.expect(pm.response.json().cart.id).not.eql(undefined);\r",
+							"    pm.collectionVariables.set(\"orderId\", pm.response.json().cart.id);\r",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{limitedAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{apiDomain}}/v1/shoppers/me/carts/active.json?productId={{productId}}&testOrder=true",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"v1",
+						"shoppers",
+						"me",
+						"carts",
+						"active.json"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "{{productId}}"
+						},
+						{
+							"key": "testOrder",
+							"value": "true"
+						}
+					]
+				},
+				"description": "Adds product to active cart using the product reference.  \n[https://docs.digitalriver.com/commerce-api/shopper-apis/cart/creating-or-updating-a-cart](https://docs.digitalriver.com/commerce-api/shopper-apis/cart/creating-or-updating-a-cart)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create payment source",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Created Payment Source\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify sourceId\", function () {",
+							"    pm.expect(pm.response.json().id).not.eql(undefined);",
+							"    pm.collectionVariables.set(\"sourceId\", pm.response.json().id);",
+							"});",
+							"",
+							"pm.test(\"Response Body Contract\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"id\");",
+							"    pm.expect(pm.response.text()).to.include(\"createdTime\");",
+							"    pm.expect(pm.response.text()).to.include(\"state\");",
+							"    pm.expect(pm.response.text()).to.include(\"type\");",
+							"    pm.expect(pm.response.text()).to.include(\"owner\");",
+							"    pm.expect(pm.response.text()).to.include(\"reusable\");",
+							"    pm.expect(pm.response.json().owner.address.line1).not.eql(null);",
+							"    pm.expect(pm.response.json().owner.address.city).not.eql(null);",
+							"    pm.expect(pm.response.json().owner.address.postalCode).not.eql(null);",
+							"    pm.expect(pm.response.json().owner.address.state).not.eql(null);",
+							"    pm.expect(pm.response.json().owner.address.country).not.eql(null);",
+							"    pm.expect(pm.response.json().creditCard.lastFourDigits).not.eql(null);",
+							"    pm.expect(pm.response.json().creditCard.expirationMonth).not.eql(null);",
+							"    pm.expect(pm.response.json().creditCard.expirationYear).not.eql(null);",
+							"    pm.expect(pm.response.json().creditCard.brand).not.eql(null);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{drjsApiKey}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"type\": \"creditCard\",\r\n\t\"currency\": \"USD\",\r\n\t\"amount\": 4.84,\r\n\t\"reusable\": false,\r\n\t\"owner\": {\r\n\t\t\"firstName\": \"Digital\",\r\n\t\t\"lastName\": \"River\",\r\n\t\t\"email\": \"test@digitalriver.com\",\r\n\t\t\"address\": {\r\n\t\t\t\"line1\": \"10380 Bren Road West\",\r\n\t\t\t\"city\": \"Minnetonka\",\r\n\t\t\t\"state\": \"MN\",\r\n\t\t\t\"country\": \"US\",\r\n\t\t\t\"postalCode\": \"55343\"\r\n\t\t}\r\n\t},\r\n\t\"creditCard\": {\r\n\t\t\"number\": \"4718491477220129\",\r\n\t\t\"expirationMonth\": 7,\r\n\t\t\"expirationYear\": 2027,\r\n\t\t\"cvv\": \"415\"\r\n\t}\r\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiDomain}}/payments/sources",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"payments",
+						"sources"
+					]
+				},
+				"description": "The DigitalRiver.js library can be used to display payment methods and create a payment source.\n\n[https://docs.digitalriver.com/commerce-api/payments/payments-solutions](https://docs.digitalriver.com/commerce-api/payments/payments-solutions)"
+			},
+			"response": []
+		},
+		{
+			"name": "Apply payment source",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Apply payment is successful\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check payment method\", function () {\r",
+							"    pm.expect(pm.response.json().cart.paymentMethod.type).not.eql(undefined);\r",
+							"    pm.collectionVariables.set(\"paymentMethod\", pm.response.json().cart.paymentMethod.type);\r",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{limitedAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"paymentMethod\": {\n    \"sourceId\": \"{{sourceId}}\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiDomain}}/v1/shoppers/me/carts/active/apply-payment-method.json",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"v1",
+						"shoppers",
+						"me",
+						"carts",
+						"active",
+						"apply-payment-method.json"
+					]
+				},
+				"description": "Apply the payment source to the active cart.  \n[https://docs.digitalriver.com/commerce-api/payments/sources#attaching-a-payment-method-to-an-order-or-cart](https://docs.digitalriver.com/commerce-api/payments/sources#attaching-a-payment-method-to-an-order-or-cart)"
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Submit cart call is successful\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify order number\", function () {",
+							"    pm.expect(pm.response.json().submitCart.order.id).not.eql(undefined);",
+							"    pm.collectionVariables.set(\"orderID\", pm.response.json().submitCart.order.id);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{limitedAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{RESPONSE-FullAccessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{apiDomain}}/v1/shoppers/me/carts/active/submit-cart.json",
+					"protocol": "https",
+					"host": [
+						"{{apiDomain}}"
+					],
+					"path": [
+						"v1",
+						"shoppers",
+						"me",
+						"carts",
+						"active",
+						"submit-cart.json"
+					]
+				},
+				"description": "Submits the cart with lineItems, address & payment applied.  \n[https://docs.digitalriver.com/commerce-api/shopper-apis/cart/submitting-a-cart](https://docs.digitalriver.com/commerce-api/shopper-apis/cart/submitting-a-cart)"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiDomain",
+			"value": "api.digitalriver.com",
+			"type": "string"
+		},
+		{
+			"key": "publicApiKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "confidentialApiKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "confidentialSecret",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "drjsApiKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "limitedAccessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
