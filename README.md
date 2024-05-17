@@ -6,9 +6,10 @@ You can find documentation for the Commerce API suite on our Doc Portal here: [h
 # Installation and Use
 To install the API Demo, click the **Run in Postman** button below and select **Postman for Windows**:
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/digital-river-doc-team/workspace/commerce-api/collection/22793802-b8abd429-d3f6-4594-adc2-f7adaa1f09ac?action=share&creator=22793802)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://www.postman.com/digitalriverapi/workspace/commerce-api/collection/11093059-fe13aaff-5deb-4618-8405-a6c31702842a?action=share&creator=34538176)
 
-Alternatively, you can install this collection from your Postman client by directly downloading the JSON file, opening Postman, clicking **Import**, dragging the JSON file to the Import window, and clicking **Import in the Import** window.
+Alternatively, you can install the collection from your Postman client by selecting **File -> Import** and pasting this URL:
+https://raw.githubusercontent.com/DigitalRiver/commerce-api/master/Commerce%20API%20Postman%20Collection.json
 
 ## Step 1: Obtain API credentials
 Before you can start sending Commerce API requests, use the [Request Demo](https://www.digitalriver.com/request-demo/) form to start the site creation process and request your [API keys](https://docs.digitalriver.com/commerce-api/resources/API-structure/api-keys) or contact your Customer Success Manager.
@@ -27,16 +28,15 @@ After you obtain your API keys, you'll want to perform some test requests. The f
 
 Complete the following steps:
 
-1. Click the **View more actions** (...) icon on the Commerce API Quick Start collection you just imported and select **Edit**.
-2. In the **Edit Collection** window, select **Variables**.
-3. Using the **Current Value** fields, enter the appropriate API key for each variable, and click **Update**.
+1. Select the **Commerce API Quick Start** collection and click on the **Variables** tab.
+2. Using the **Current value** fields, enter the appropriate API key for each variable.
 
   * **apiDomain**: For the production environment, enter `api.digitalriver.com`. For the client test environment (CTE) enter `api-cte-ext.digitalriver.com`.
   * **publicApiKey**: Provide the public API key provided by Digital River.
   * **drjsApiKey**: Provide the DigitalRiver.js key provided by Digital River.
   * **confidentialApiKey**: Provide the confidential API key provided by Digital River.
   * **confidentialSecret**: Provide the confidential secret provided by Digital River.
-4. Once you set up the variables, run each request individually or use the [collection runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/) to run each request sequentially.
+3. Once you set up the variables, save the collection and run each request individually or use the [collection runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/) to run each request sequentially.
 
 Now that you've successfully performed a series of simple test requests, you're ready to take a deeper dive into the Commerce API.
 
